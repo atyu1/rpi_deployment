@@ -26,5 +26,14 @@ ip=192.168.0.22::255.255.255.0:192.168.0.1:rpi:eth0:off
 Optional: disable user pi
 8. 
 
+## Static RPI IP address
+
+``` 
+interface wlan0
+static ip_address=192.168.0.201/24
+static routers=192.168.1.1
+static domain_name_servers=192.168.1.1
+```
+
 
 ## Scripts
