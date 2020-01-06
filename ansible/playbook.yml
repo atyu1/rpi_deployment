@@ -1,0 +1,6 @@
+-
+  name: Install Motion
+  hosts: pi
+  tasks:
+   - name: Install motion
+   - 
