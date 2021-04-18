@@ -10,6 +10,7 @@
 
 RASPBIAN_URL="https://downloads.raspberrypi.org/raspbian_lite_latest"
 CARD_DEV="sdb"
+IP="192.168.0.222"
 
 SSID=$1
 PSK=$2
@@ -25,6 +26,7 @@ if [ $# -gt 0 ]; then
 
         filename=$(ls | grep *raspbian*lite*)
         zipfilename=$filenamei.zip
+        ipbootline="ip=$IP::255.255.255.0:192.168.0.1:rpi:eth0:off"
 
         mv $filename $zipfilename
 
@@ -54,7 +56,9 @@ network={
 EOF
 
 		touch $TMP/boot/ssh
-	
+
+		echo $ipbootline >> $TMP/boot/cmdline.txt
+
 		# cleanup
 		umount ${TMP}/boot/
 		umount ${TMP}
