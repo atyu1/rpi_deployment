@@ -56,8 +56,8 @@ network={
 EOF
 
 		touch $TMP/boot/ssh
-
-		echo $ipbootline >> $TMP/boot/cmdline.txt
+		newcmdline=$(sed -e "s@\$@ $ipbootline@" $TMP/boot/cmdline.txt)
+                echo $newcmdline > $TMP/boot/cmdline.txt
 
 		# cleanup
 		umount ${TMP}/boot/
