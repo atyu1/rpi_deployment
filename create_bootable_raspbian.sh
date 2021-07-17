@@ -59,6 +59,16 @@ EOF
 		newcmdline=$(sed -e "s@\$@ $ipbootline@" $TMP/boot/cmdline.txt)
                 echo $newcmdline > $TMP/boot/cmdline.txt
 
+		#create proper dhcpcd.conf content file
+                cat << EOF >> $TMP/etc/dhcpcd.conf
+interface wlan0
+static ip_address=192.168.0.201/24
+static routers=192.168.0.1
+static domain_name_servers=192.168.0.1
+EOF
+
+
+
 		# cleanup
 		umount ${TMP}/boot/
 		umount ${TMP}
