@@ -6,10 +6,14 @@ Automated deployment of rpi
 2. Decompress
 3. Add bootfile
 4. Copy the new image with IP via dd
-5. Use setup_remote_pi.sh script to configure initial values
+5. Config wifi
+6. Config networking
+7. Use setup_remote_pi.sh script to configure initial values
 
-Add option to cmdline.txt
-ip=192.168.0.22::255.255.255.0:192.168.0.1:rpi:eth0:off
+`ToDo:`
+- Add IP address via option
+- Make arguments more fancy
+- Edit the code to split to functions for better readability
 
 ## Create ansilbe playbook with
 1. Configure Wifi
