@@ -10,7 +10,9 @@
 
 RASPBIAN_URL="https://downloads.raspberrypi.org/raspbian_lite_latest"
 CARD_DEV="sdb"
-IP="192.168.0.222"
+PREFIX="192.168.1.222/24"
+GW="192.168.1.1"
+DNS="192.168.1.1"
 
 SSID=$1
 PSK=$2
@@ -62,9 +64,9 @@ EOF
 		#create proper dhcpcd.conf content file
                 cat << EOF >> $TMP/etc/dhcpcd.conf
 interface wlan0
-static ip_address=192.168.0.201/24
-static routers=192.168.0.1
-static domain_name_servers=192.168.0.1
+static ip_address=$PREFIX
+static routers=$GW
+static domain_name_servers=$DNS
 EOF
 
 
