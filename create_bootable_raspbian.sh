@@ -18,17 +18,22 @@ SSID=$1
 PSK=$2
 IMAGE_FILE=""
 
-echo $1 
-echo $2
+
+if [ $1 = "--help" ] || [ $1 = "-h" ]; then
+	echo "Usage: sudo ./$0 <SSID> <PSK> [-d|--download]"
+	echo ""
+	echo "Options:"
+	echo "-d|--download : download and edit raspbian image in case of first run"
+        exit 0
+fi
 
 # 1. Download and decompress
 if [ $# -gt 0 ]; then
-    if [ $3 = "-d" ]; then
+    if [ $3 = "-d" ] || [ $3 = "--download" ]; then
         curl -JLO $RASPBIAN_URL
 
         filename=$(ls | grep *raspbian*lite*)
         zipfilename=$filenamei.zip
-        ipbootline="ip=$IP::255.255.255.0:192.168.0.1:rpi:eth0:off"
 
         mv $filename $zipfilename
 
@@ -58,8 +63,6 @@ network={
 EOF
 
 		touch $TMP/boot/ssh
-		newcmdline=$(sed -e "s@\$@ $ipbootline@" $TMP/boot/cmdline.txt)
-                echo $newcmdline > $TMP/boot/cmdline.txt
 
 		#create proper dhcpcd.conf content file
                 cat << EOF >> $TMP/etc/dhcpcd.conf
