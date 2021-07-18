@@ -1,6 +1,9 @@
 # rpi_deployment
 Automated deployment of rpi
 
+First run create_bootable_raspbian.sh - this script prepares the SD card with Wifi and Networking configured
+Second run setup_remote_pi.sh - this configures users, change networking, hostname and install docker
+
 ## Steps
 1. Download latest image
 2. Decompress
@@ -10,12 +13,15 @@ Automated deployment of rpi
 6. Config networking
 7. Use setup_remote_pi.sh script to configure initial values
 
-`ToDo:`
-- Add IP address via option
-- Make arguments more fancy
-- Edit the code to split to functions for better readability
+`Usage:`
+```
+Usage: sudo ././create_bootable_raspbian.sh <SSID> <PSK> [-d|--download]
 
-## Create ansilbe playbook with
+Options:
+-d|--download : download and edit raspbian image in case of first run
+```
+
+## setup_remote_pi
 1. Configure Wifi
 1. Configure static IP for wlan0
 1. Setup keyboard language
@@ -25,19 +31,7 @@ Automated deployment of rpi
 1. Enable i2c and spi for GPIO
 1. Install vim
 1. Install rpi.GPIO
-1. Install docker
+1. Install docker - ToDo
 
 Optional: disable user pi
-8. 
 
-## Static RPI IP address
-
-``` 
-interface wlan0
-static ip_address=192.168.0.201/24
-static routers=192.168.0.1
-static domain_name_servers=192.168.0.1
-```
-
-
-## Scripts
