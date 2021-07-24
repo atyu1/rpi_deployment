@@ -1,0 +1,23 @@
+---
+- name: Create wpa_supplicant file
+  copy:
+    dest: "/etc/network/interfaces"
+    content: |
+      allow-hotplug wlan0
+      iface wlan0 inet static
+      address {{ wlan.address }}
+      gateway {{ wlan.gateway }}
+      dns-nameservers {{ wlan.dns }}
+      wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+- name: Stop and Disable DHCPCd
+  ansible.builtin.systemd:
+    name: dhcpcd
+    state: stopped
+    enabled: no
+
+- name: Start and Enable networking
+  ansible.builtin.systemd:
+    name: networking
+    state: started
+    enabled: yes

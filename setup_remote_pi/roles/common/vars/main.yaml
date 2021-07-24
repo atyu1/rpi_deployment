@@ -1,0 +1,5 @@
+---
+# Things not very often changed
+keyboard:
+  locale: "en_US.UTF-8"
+  language: "us"

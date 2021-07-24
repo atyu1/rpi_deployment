@@ -1,0 +1,8 @@
+--- 
+- name: Install latest Docker engine
+  apt:
+    update_cache: yes
+    autoremove: yes
+    state: present
+    pkg:
+      - docker

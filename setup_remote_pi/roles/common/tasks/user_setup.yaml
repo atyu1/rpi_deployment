@@ -1,0 +1,19 @@
+---
+- name: Add user {{ user.name }} with proper groups for Raspberry PI to use Sensors
+  ansible.builtin.user:
+    name: "{{ user.name }}"
+    shell: /bin/bash
+    groups: sudo,spi,i2c,adm
+    append: yes
+
+- name: Add SSH authorized key for {{ user.name }}
+  ansible.posix.authorized_key:
+    user: "{{ user.name }}"
+    state: present
+    key: "{{ user.ssh_key_url }}"
+
+- name: Disable default pi user
+  ansible.builtin.user:
+    name: pi
+    shell: /usr/bin/nologin
+    password_lock: yes

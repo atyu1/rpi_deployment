@@ -1,0 +1,3 @@
+---
+- include: basic_setup.yaml
+- include: user_setup.yaml
