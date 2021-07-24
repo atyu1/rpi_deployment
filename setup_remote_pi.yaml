@@ -1,0 +1,91 @@
+---
+- name: Remote Raspbery PI Staging
+  hosts: raspberrypi
+  remote_iuser: root
+
+  tasks:
+  - name: Install latest packes
+    apt:
+      update_cache: yes
+      autoremove: yes
+      state: present
+      pkg:
+        - vim
+        - python3
+
+  # Todo: Add global variables
+  - name: Set a hostname
+    ansible.builtin.hostname:
+      name: rpi
+
+  - name: Set keyboard locale
+    ansible.builtin.command: "raspi-config nonint do_change_locale en_US.UTF-8 2> /dev/null"
+
+  - name: Set keyboard locale
+    ansible.builtin.command: "raspi-config nonint do_configure_keyboard us 2> /dev/null"
+
+  # Todo: add global variables
+  - name: Add user {{ user.name }} with proper groups for Raspberry PI to use Sensors
+    ansible.builtin.user:
+      name: "{{ user.name }}"
+      shell: /bin/bash
+      groups: sudo,spi,i2c,adm
+      append: yes
+
+  - name: Add SSH authorized key for {{ user.name }}
+    ansible.posix.authorized_key:
+      user: "{{ user.name }}"
+      state: present
+      key: "{{ user.ssh_key_url }}"
+  # Todo: add global variables
+  - name: Disable default PI
+    ansible.builtin.user:
+      name: pi
+      shell: /usr/bin/nologin
+      password_lock: yes
+
+  # Todo: add global variables
+  # Todo: consider to use template
+  - name: Create wpa_supplicant file
+    copy:
+      dest: "/etc/network/interfaces"
+      content: |
+        allow-hotplug wlan0
+        iface wlan0 inet static
+	      address $ip
+	      gateway $dns
+	      dns-nameservers $dns
+	      wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+  - name: Stop and Disable DHCPCd
+    ansible.builtin.systemd:
+      name: dhcpcd
+      state: stopped
+      enabled: no
+  
+  - name: Start and Enable networking
+    ansible.builtin.systemd:
+      name: networking
+      state: started
+      enabled: yes
+  # Todo: add global variables
+  # Todo: consider to use template
+  - name: Configure WPA Supplicant
+    copy:
+      dest: "/etc/wpa_supplicant/wpa_supplicant.conf"
+      content: |
+        ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+        update_config=1
+        country=SK
+
+        network={
+          ssid="$ssid"
+          psk="$wifi_pass"
+        }
+
+  - name: Bring wlan0 up
+    ansible.builtin.command: "ip link set wlan0 up"
+
+  - name: Reconfigure WLAN0 
+
+...
