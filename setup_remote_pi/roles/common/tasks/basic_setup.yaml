@@ -1,0 +1,20 @@
+--- 
+- name: Install latest packes
+  apt:
+    update_cache: yes
+    autoremove: yes
+    state: present
+    pkg:
+      - vim
+      - python3
+
+# Todo: Add global variables
+- name: Set a hostname
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+
+- name: Set keyboard locale
+  ansible.builtin.command: "raspi-config nonint do_change_locale {{ keyboard.locale }} 2> /dev/null"
+
+- name: Set keyboard locale
+  ansible.builtin.command: "raspi-config nonint do_configure_keyboard {{ keyboard.language }} 2> /dev/null"
