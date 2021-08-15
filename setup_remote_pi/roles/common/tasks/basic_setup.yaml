@@ -8,6 +8,16 @@
       - vim
       - python3
 
+- name: Install GPIO
+  apt:
+    state: present
+    pkg:
+      - rpi.gpio
+
+- name: Enable Remote GPIO
+    shell: "raspi-config nonint do_rgpio 0"
+    when: raspiconfig.RGPIO 
+
 # Todo: Add global variables
 - name: Set a hostname
   ansible.builtin.hostname:
@@ -18,3 +28,4 @@
 
 - name: Set keyboard locale
   ansible.builtin.command: "raspi-config nonint do_configure_keyboard {{ keyboard.language }} 2> /dev/null"
+
