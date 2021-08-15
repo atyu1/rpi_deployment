@@ -1,5 +1,6 @@
 --- 
 - name: Install latest Docker engine
+  become: yes
   apt:
     update_cache: yes
     autoremove: yes

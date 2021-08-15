@@ -1,5 +1,6 @@
 --- 
 - name: Install latest packes
+  become: yes
   apt:
     update_cache: yes
     autoremove: yes
@@ -9,14 +10,15 @@
       - python3
 
 - name: Install GPIO
+  become: yes
   apt:
     state: present
     pkg:
-      - rpi.gpio
+      - python3-rpi.gpio
 
 - name: Enable Remote GPIO
-    shell: "raspi-config nonint do_rgpio 0"
-    when: raspiconfig.RGPIO 
+  become: yes
+  shell: raspi-config nonint do_rgpio 0
 
 # Todo: Add global variables
 - name: Set a hostname
@@ -24,8 +26,10 @@
     name: "{{ hostname }}"
 
 - name: Set keyboard locale
-  ansible.builtin.command: "raspi-config nonint do_change_locale {{ keyboard.locale }} 2> /dev/null"
+  become: yes
+  shell: raspi-config nonint do_change_locale {{ keyboard.locale }}
 
 - name: Set keyboard locale
-  ansible.builtin.command: "raspi-config nonint do_configure_keyboard {{ keyboard.language }} 2> /dev/null"
+  become: yes
+  shell: raspi-config nonint do_configure_keyboard {{ keyboard.language }}
 
